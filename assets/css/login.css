@@ -1,0 +1,134 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "FilsonPro-Regular", sans-serif;
+}
+
+body {
+    background-color: #EAECF1;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#container, #login-container, .input-box {
+    display: flex;
+    flex-direction: column;
+}
+
+#container {
+    width: 350px;
+}
+
+/*Container de Login */
+#login-container {
+    border: 1px solid #0C5823;
+    border-radius: 10px;
+    padding: 40px 20px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+input {
+    background-color: #ffffff00;
+    border: none;
+    border-bottom: 1px solid #0C5823;
+    /*transition: border-bottom 0.3s ease}*/
+}
+
+.input-box {
+    margin-top: 20px;
+}
+
+.input-box label {
+    position: relative;
+    bottom: 24px;
+    left: 0;
+    transition: all 0.3s ease-in-out;
+    color: #0C5823;
+}
+
+.input-box input:focus + label {
+    bottom: 40px;
+    font-size: 14px;
+}
+
+.input-box input:focus {
+    outline: none;
+    border: none;
+    border-bottom: 2px solid #0C5823 !important;
+}
+
+.input-check {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.input-check label {
+    margin-left: 10px;
+    color: #0C5823;
+}
+
+input[type="checkbox"]::before {
+    content: "";
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border: 2px solid #0C5823;
+    margin: 2px 0px;
+    border-radius: 3px;
+    background-color: #ffffff00;
+}
+
+input[type="checkbox"]:checked::before {
+    border: none;
+}
+
+/*
+input[type="checkbox"]:checked {
+    background-color: #0C5823;
+}
+
+input[type="checkbox"]:checked + label {
+    color: #005cc8;
+}
+*/
+
+/* Imagens e botões */
+a {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+img {
+    width: 140px;
+}
+
+#enter {
+    padding: 12px 0px;
+    background-color: #0C5823;
+    color: #ffffff;
+    font-size: 12px;
+    border: none;
+    text-transform: uppercase;
+    border-radius: 4px;
+}
+
+#enter:hover {
+    background-color: #2A984C;
+}
+
+#forgot {
+    border: none;
+    background-color: #ffffff00;
+    color: #0C5823;
+    font-size: 14px;
+}
+
+#forgot:hover {
+    color: #2A984C;
+}
