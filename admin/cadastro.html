@@ -6,71 +6,36 @@
     <title>Cadastro de Usuarios</title>
     <link href="https://db.onlinewebfonts.com/c/628d8334f66234c9480d472f2d7d911a?family=FilsonPro-Regular" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/cadastro.css">
+    <link rel="stylesheet" href="../assets/css/cadastro.css">
 </head>
 <body>
     <div id="container">
         <div id="container-left">
             <div id="text-container-left">
-                    <!-- <a href="https://dev.grupoalphas.com/projetos/tutti-depil/" target="_blank">
-                        <img src="./imgs/tuttidepil_logo.png" alt="logo_depil">
-                    </a> -->
                 <br>
                 <h2 class="text-2xl font-semibold">Cadastro de <br>Representantes</h2>
                 <p>Complete com suas informações:</p>
             </div>
             <div id="icons-list">
-                <img src="" alt="">
                 <ul>
-                    <li>
-                        <a href="#">
-                            <!-- <img src="./imgs/email.png" alt="icone_de_email" class="img-icons"> -->
-                            Email
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="hover-reverse border font-semibold tracking-widest">
-                            <!-- <img src="./imgs/telefone.png" alt="icone_de_telefone"
-                            class="img-icons"> -->
-                            Telefone
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="font-semibold tracking-widest">
-                            <!-- <img src="./imgs/localizacao.png" alt="icone_de_localização"
-                            class="img-icons"> -->
-                            Endereço
-                        </a>
-                    </li>
+                    <li><a href="#">Email</a></li>
+                    <li><a href="#" class="hover-reverse border font-semibold tracking-widest">Telefone</a></li>
+                    <li><a href="#" class="font-semibold tracking-widest">Endereço</a></li>
                 </ul>
             </div>
             <div id="social-icons">
                 <ul>
-                    <li>
-                        <a href="#">
-                            <!-- <img src="./imgs/facebook.png" alt="icone_de_email" class="img-icons"> -->
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="hover-reverse">
-                            <!-- <img src="./imgs/instagram.png" alt="icone_de_telefone"
-                            class="img-icons"> -->
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <!-- <img src="./imgs/whatsapp.png" alt="icone_de_telefone"
-                            class="img-icons"> -->
-                        </a>
-                    </li>
+                    <li><a href="#"></a></li>
+                    <li><a href="#" class="hover-reverse"></a></li>
+                    <li><a href="#"></a></li>
                 </ul>
             </div>
         </div>
         <form action="###" method="post" id="meuForm">
             <div id="form-container">
-                <div id="line1" >
+                <div id="line1">
                     <span class="input-label">
-                        <label for="name" class="text-sm  font-semibold tracking-wide" >Nome:</label>
+                        <label for="name" class="text-sm font-semibold tracking-wide">Nome:</label>
                         <input type="text" name="name" id="name" placeholder="Digite seu nome aqui" class="space text-sm" required>
                     </span>
                     <span class="input-label">
@@ -111,8 +76,7 @@
                             <option value="Tocantins">Tocantins (TO)</option>
                         </select>
                     </span>
-                    <span class="input
-                    -label select-label">
+                    <span class="input-label select-label">
                         <label for="city" class="text-sm font-semibold tracking-wide">Cidade:</label>
                         <input type="text" placeholder="Digite sua cidade aqui" name="city" id="city" class="text-sm" required>
                     </span>
@@ -141,11 +105,39 @@
     </div>
     
     <script>
-       const meuForm = document.getElementById('meuForm');
+        const meuForm = document.getElementById('meuForm');
+        
+        async function salvarMedico(medico) {
+            let urlApiSalvar = "https://projeto-integrado-avaliacao.azurewebsites.net/projeto4/fecaf/novo/medico";
+            try {
+                let response = await fetch(urlApiSalvar, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(medico)
+                });
+                let data = await response.json();
+                console.log('Médico salvo:', data);
+                alert('Médico salvo com sucesso!');
+            } catch (error) {
+                console.error('Erro ao salvar médico:', error);
+                alert('Erro ao salvar médico.');
+            }
+        }
 
         meuForm.addEventListener('submit', function(event) {
-            window.alert("Formulario enviado com sucesso!")
-        }); 
+            event.preventDefault(); // Previne o envio do formulário
+
+            let medico = {
+                nome: document.getElementById('name').value,
+                crm: document.getElementById('phone').value,
+                image: '', // Adicione aqui se tiver um campo para a imagem
+                especialidade: document.getElementById('state').value // Pode ajustar conforme sua API
+            };
+
+            salvarMedico(medico);
+        });
     </script>
 </body>
 </html>

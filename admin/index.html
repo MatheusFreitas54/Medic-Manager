@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../assets/css/login.css">
+    <title>Cadastro</title>
+</head>
+<body>
+    <header>
+        Sistema de Gerenciamento de Médicos
+    </header>
+    <div id="principal">
+        <h1>Cadastro de Médicos</h1>
+        <form id="form">
+            <label>Nome:</label>
+            <input type="text" id="nome"><br>
+            <label>CRM:</label>
+            <input type="text" id="crm"><br>
+            <label>Imagem:</label>
+            <input type="text" id="image"><br>
+            <label>Especialidade:</label>
+            <input type="text" id="especialidade"><br>
+            <button type="button" id="Salvar">Salvar</button>
+        </form>
+    </div>
+    <div id="listPets">
+        <h1>Listagem de Médicos</h1>
+        <table id="medicosTable" border="1">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>CRM</th>
+                    <th>Especialidade</th>
+                    <th>Imagem</th>
+                    <th>Opções</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Dados dos médicos serão inseridos aqui -->
+            </tbody>
+        </table>
+    </div>
+    <footer>
+        <span> &copy; - Felipe & Marcela & Matheus  </span>
+    </footer>
+    <script src="js/gerenciamento_medicos.js"></script>
+</body>
+</html>
+
+
+
+<script>
+const botaoSalvar = document.getElementById('Salvar');
+let medicoIdParaEditar = null;
+
+const postMedico = async function() {
+    let url = 'https://projeto-integrado-avaliacao.azurewebsites.net/projeto4/fecaf/novo/medico';
+
+    let nome = document.getElementById('nome').value;
+    let crm = document.getElementById('crm').value;
+    let imagem = document.getElementById('image').value;
+    let especialidade = document.getElementById('especialidade').value;
+
+    let medicoJSON = {
+        nome,
+        crm,
+        image: imagem,
+        especialidade
+    };
+
+    if (medicoIdParaEditar) {
+        url = `https://projeto-integrado-avaliacao.azurewebsites.net/projeto4/fecaf/editar/medico/${medicoIdParaEditar}`;
+    }
+
+    const request = await fetch(url, {
+        method: 'POST',
+        mode: 'cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(medicoJSON)
+    });
+
+    if (request.status == 200 || request.status == 201) {
+        alert('Médico salvo com sucesso.');
+        resetForm();
+        getAPIMedicos(); // Atualiza a lista de médicos após adicionar ou editar um médico
+    } else {
+        alert('Não foi possível salvar o médico.');
+    }
+};
+
+const getAPIMedicos = async function() {
+    let url = 'https://projeto-integrado-avaliacao.azurewebsites.net/projeto4/fecaf/listar/medicos';
+
+    let response = await fetch(url);
+
+    let resultMedicos = await response.json();
+
+    if (response.status == 200) {
+        setListDados(resultMedicos);
+    } else {
+        alert('A API não retornou dados ou está fora do ar.');
+    }
+};
+
+const deleteMedico = async function(id) {
+    let url = `https://projeto-integrado-avaliacao.azurewebsites.net/projeto4/fecaf/excluir/medico/${id}`;
+
+    let response = await fetch(url, {
+        method: 'DELETE'
+    });
+
+    if (response.status == 200) {
+        alert('Médico excluído com sucesso.');
+        getAPIMedicos(); // Atualiza a lista de médicos após excluir um médico
+    } else {
+        alert('Não foi possível excluir o médico.');
+    }
+};
+
+const editarMedico = function(id) {
+    medicoIdParaEditar = id;
+    let medicoParaEditar = getMedicoById(id);
+
+    document.getElementById('nome').value = medicoParaEditar.nome;
+    document.getElementById('crm').value = medicoParaEditar.crm;
+    document.getElementById('image').value = medicoParaEditar.image;
+    document.getElementById('especialidade').value = medicoParaEditar.especialidade;
+};
+
+const resetForm = function() {
+    medicoIdParaEditar = null;
+    document.getElementById('nome').value = '';
+    document.getElementById('crm').value = '';
+    document.getElementById('image').value = '';
+    document.getElementById('especialidade').value = '';
+};
+
+const getMedicoById = function(id) {
+    let listaMedicos = document.getElementById('medicosTable').getElementsByTagName('tbody')[0].children;
+
+    for (let i = 0; i < listaMedicos.length; i++) {
+        let medico = listaMedicos[i];
+        if (medico.cells[4].querySelector('.editar').getAttribute('onclick').includes(`(${id})`)) {
+            return {
+                id,
+                nome: medico.cells[0].textContent,
+                crm: medico.cells[1].textContent,
+                especialidade: medico.cells[2].textContent,
+                image: medico.cells[3].querySelector('img') ? medico.cells[3].querySelector('img').src : null
+            };
+        }
+    }
+
+    return null;
+};
+
+botaoSalvar.addEventListener('click', function() {
+    postMedico();
+});
+
+window.addEventListener('load', function() {
+    getAPIMedicos();
+});
+
+const setListDados = function(dadosMedicos) {
+    let tabela = document.getElementById('medicosTable').getElementsByTagName('tbody')[0];
+    tabela.innerHTML = '';
+
+    dadosMedicos.medicos.forEach(function(medico) {
+        let linha = tabela.insertRow();
+        let nomeCell = linha.insertCell(0);
+        let crmCell = linha.insertCell(1);
+        let especialidadeCell = linha.insertCell(2);
+        let imagemCell = linha.insertCell(3);
+        let opcoesCell = linha.insertCell(4);
+
+        nomeCell.textContent = medico.nome;
+        crmCell.textContent = medico.crm;
+        especialidadeCell.textContent = medico.especialidade;
+        imagemCell.innerHTML = medico.image ? `<img src="${medico.image}" alt="Imagem do Médico" style="width:50px;height:50px;">` : 'N/A';
+        opcoesCell.innerHTML = `<span class="editar" onclick="editarMedico(${medico.id})">Editar</span> | <span class="excluir" onclick="deleteMedico(${medico.id})">Excluir</span>`;
+    });
+};
+</script>
+
+
+</script>
