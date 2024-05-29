@@ -1,98 +1,163 @@
-// Listar Medicos
+const botaoSalvar = document.getElementById('Salvar');
+let medicoId = null;
+let medicoParaExcluir = null;
 
-let urlApiListar = "https://projeto-integrado-avaliacao.azurewebsites.net/projeto4/fecaf/listar/medicos";
+const postMedico = async function() {
+    let url = 'https://projeto-integrado-avaliacao.azurewebsites.net/projeto4/fecaf/novo/medico';
+    let method = 'POST';
 
-async function listarMedicos() {
-    try {
-        let response = await fetch(urlApiListar);
-        let data = await response.json();
-        console.log(data);
-    } catch (error) {
-        console.error('Erro ao listar médicos:', error);
+    let nome = document.getElementById('nome').value;
+    let crm = document.getElementById('crm').value;
+    let imagem = document.getElementById('image').value;
+    let especialidade = document.getElementById('especialidade').value;
+
+    let medicoJSON = {
+        nome,
+        crm,
+        image: imagem,
+        especialidade
+    };
+
+    if (medicoId) {
+        url = `https://projeto-integrado-avaliacao.azurewebsites.net/projeto4/fecaf/atualizar/medico/${medicoId}`;
+        method = 'PUT';
     }
-}
 
-listarMedicos();
+    const request = await fetch(url, {
+        method: method,
+        mode: 'cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(medicoJSON)
+    });
 
-
-
-// Salvar Medicos
-
-let urlApiSalvar = "https://projeto-integrado-avaliacao.azurewebsites.net/projeto4/fecaf/novo/medico";
-
-async function salvarMedico(medico) {
-    try {
-        let response = await fetch(urlApiSalvar, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(medico)
-        });
-        let data = await response.json();
-        console.log('Médico salvo:', data);
-    } catch (error) {
-        console.error('Erro ao salvar médico:', error);
+    if (request.ok) {
+        alert(`Médico ${medicoId ? 'atualizado' : 'salvo'} com sucesso.`);
+        resetForm();
+        getAPIMedicos(); // Atualiza a lista de médicos após adicionar ou editar um médico
+    } else {
+        alert('Não foi possível salvar o médico.');
     }
-}
-
-let novoMedico = {
-    nome: "teste",
-    crm: "teste",
-    image: "teste",
-    especialidade: "20"
 };
 
-salvarMedico(novoMedico);
+const getAPIMedicos = async function() {
+    let url = 'https://projeto-integrado-avaliacao.azurewebsites.net/projeto4/fecaf/listar/medicos';
 
+    let response = await fetch(url);
 
-// Atualizar Medicos
-let urlApiAtualizar = "https://projeto-integrado-avaliacao.azurewebsites.net/projeto4/fecaf/atualizar/medico/";
+    let resultMedicos = await response.json();
 
-async function atualizarMedico(medico) {
-    try {
-        let response = await fetch(urlApiAtualizar, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(medico)
-        });
-        let data = await response.json();
-        console.log('Médico atualizado:', data);
-    } catch (error) {
-        console.error('Erro ao atualizar médico:', error);
+    if (response.status == 200) {
+        setListDados(resultMedicos);
+    } else {
+        alert('A API não retornou dados ou está fora do ar.');
     }
-}
-
-let medicoAtualizado = {
-    nome: "teste 2",
-    crm: "teste",
-    image: "teste",
-    especialidade: "20"
 };
 
-atualizarMedico(medicoAtualizado);
+const deleteMedico = async function(id) {
+    let url = `https://projeto-integrado-avaliacao.azurewebsites.net/projeto4/fecaf/excluir/medico/${id}`;
 
+    let response = await fetch(url, {
+        method: 'DELETE'
+    });
 
+    if (response.status == 200) {
+        alert('Médico excluído com sucesso.');
+        getAPIMedicos(); // Atualiza a lista de médicos após excluir um médico
+    } else {
+        alert('Não foi possível excluir o médico.');
+    }
+};
 
-// Excluir Medicos
+const editarMedico = function(id) {
+    medicoId = id;
+    let medicoParaEditar = getMedicoById(id);
 
-let urlApiExcluir = "https://projeto-integrado-avaliacao.azurewebsites.net/projeto4/fecaf/excluir/medico/";
+    document.getElementById('nome').value = medicoParaEditar.nome;
+    document.getElementById('crm').value = medicoParaEditar.crm;
+    document.getElementById('image').value = medicoParaEditar.image;
+    document.getElementById('especialidade').value = medicoParaEditar.especialidade;
+};
 
-async function excluirMedico(crm) {
-    try {
-        let response = await fetch(`${urlApiExcluir}${crm}`, {
-            method: 'DELETE'
-        });
-        if (response.ok) {
-            console.log('Médico excluído com sucesso.');
-        } else {
-            console.error('Erro ao excluir médico:', response.statusText);
+const resetForm = function() {
+    medicoId = null;
+    document.getElementById('nome').value = '';
+    document.getElementById('crm').value = '';
+    document.getElementById('image').value = '';
+    document.getElementById('especialidade').value = '';
+};
+
+const getMedicoById = function(id) {
+    let listaMedicos = document.getElementById('medicosTable').getElementsByTagName('tbody')[0].children;
+
+    for (let i = 0; i < listaMedicos.length; i++) {
+        let medico = listaMedicos[i];
+        if (medico.cells[4].querySelector('.editar').getAttribute('onclick').includes(`(${id})`)) {
+            return {
+                id,
+                nome: medico.cells[0].textContent,
+                crm: medico.cells[1].textContent,
+                especialidade: medico.cells[2].textContent,
+                image: medico.cells[3].querySelector('img') ? medico.cells[3].querySelector('img').src : null
+            };
         }
-    } catch (error) {
-        console.error('Erro ao excluir médico:', error);
     }
-}
 
-excluirMedico("teste"); // Substitua "teste" pelo CRM do médico que você deseja excluir
+    return null;
+};
+
+
+const confirmarExclusao = function(id) {
+    medicoParaExcluir = getMedicoById(id);
+    document.getElementById('confirmMessage').textContent = `Tem certeza que deseja excluir ${medicoParaExcluir.nome}: CRM ${medicoParaExcluir.crm}?`;
+    document.getElementById('confirmModal').style.display = 'block';
+};
+
+const fecharModal = function() {
+    document.getElementById('confirmModal').style.display = 'none';
+    medicoParaExcluir = null;
+};
+
+const confirmarSim = function() {
+    if (medicoParaExcluir) {
+        deleteMedico(medicoParaExcluir.id);
+    }
+    fecharModal();
+};
+
+const confirmarNao = function() {
+    fecharModal();
+};
+
+document.getElementById('confirmYes').addEventListener('click', confirmarSim);
+document.getElementById('confirmNo').addEventListener('click', confirmarNao);
+document.getElementsByClassName('close')[0].addEventListener('click', fecharModal);
+
+botaoSalvar.addEventListener('click', function() {
+    postMedico();
+});
+
+window.addEventListener('load', function() {
+    getAPIMedicos();
+});
+
+const setListDados = function(dadosMedicos) {
+    let tabela = document.getElementById('medicosTable').getElementsByTagName('tbody')[0];
+    tabela.innerHTML = '';
+
+    dadosMedicos.medicos.forEach(function(medico) {
+        let linha = `
+            <tr>
+                <td class="linha">${medico.nome}</td>
+                <td class="linha">${medico.crm}</td>
+                <td class="linha">${medico.especialidade}</td>
+                <td class="linha">${medico.image ? `<img src="${medico.image}" alt="Imagem do Médico" style="width:50px;height:50px;">` : 'N/A'}</td>
+                <td class="linha">
+                    <span class="editar linha" onclick="editarMedico(${medico.id})">Editar</span> | 
+                    <span class="excluir linha" onclick="confirmarExclusao(${medico.id})">Excluir</span>
+                </td>
+            </tr>
+        `;
+
+        tabela.innerHTML += linha;
+    });
+};
