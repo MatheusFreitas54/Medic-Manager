@@ -141,21 +141,21 @@ window.addEventListener('load', function() {
 });
 
 const setListDados = function(dadosMedicos) {
-    let tabela = document.getElementById('medicosTable').getElementsByTagName('tbody')[0];
+    let tabela = document.getElementById('cards');
     tabela.innerHTML = '';
 
     dadosMedicos.medicos.forEach(function(medico) {
         let linha = `
-            <tr>
-                <td class="linha">${medico.nome}</td>
-                <td class="linha">${medico.crm}</td>
-                <td class="linha">${medico.especialidade}</td>
-                <td class="linha">${medico.image ? `<img src="${medico.image}" alt="Imagem do Médico" style="width:50px;height:50px;">` : 'N/A'}</td>
-                <td class="linha">
+            <div class="card">
+                <h4>${medico.nome}</h4>
+                <p>${medico.crm}</p>
+                <p>${medico.especialidade}</p>
+                ${medico.image ? `<img src="${medico.image}" alt="Imagem do Médico" style="width:50px;height:50px;">` : 'N/A'}
+                <p>
                     <span class="editar linha" onclick="editarMedico(${medico.id})">Editar</span> | 
                     <span class="excluir linha" onclick="confirmarExclusao(${medico.id})">Excluir</span>
-                </td>
-            </tr>
+                </p>
+            </div>
         `;
 
         tabela.innerHTML += linha;

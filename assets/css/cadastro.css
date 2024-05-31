@@ -1,5 +1,5 @@
 body{
-    background-color: #dedee1;
+    background-color: #e6e6e6;
     margin: 0;
     padding: 0;
     display: flex;
@@ -22,7 +22,7 @@ body{
     width: inherit;
     height: 50px;
     text-align: center;
-    background-color:#f77307;
+    background-color:#834c1f;
     color: #000000;
     font-family: Verdana;
 }
@@ -76,85 +76,30 @@ form{
     cursor: pointer;
 }
 
-#tabela-medicos {
+#container-medicos {
     width: 90%;
     max-width: 1200px;
     background-color: rgba(144, 238, 144, 0.2); /* Cor verde clara e opaca */
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.cards{
+
 }
 
-#tabela-medicos h1 {
-    text-align: center;
-    color: #333;
+.card{
+    border: #000000 solid ;
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-    font-size: 1em;
-    min-width: 400px;
-}
-
-table thead tr {
-    background-color: #569c56;
-    color: #ffffff;
-    text-align: left;
-    font-weight: bold;
-}
-
-table th, table td {
-    padding: 12px 15px;
-}
-
-table tbody tr {
-    border-bottom: 1px solid #dddddd;
-}
-
-table tbody tr:nth-of-type(even) {
-    background-color: #f3f3f3;
-}
-
-table tbody tr:last-of-type {
-    border-bottom: 2px solid #062406;
-}
-
-table tbody tr:hover {
-    background-color: #f1f1f1;
-}
-
-@media (max-width: 768px) {
-    table, thead, tbody, th, td, tr {
-        display: block;
-    }
-
-    table thead tr {
-        display: none;
-    }
-
-    table tbody tr {
-        margin-bottom: 15px;
-    }
-
-    table tbody tr td {
-        text-align: right;
-        padding-left: 50%;
-        position: relative;
-    }
-
-    table tbody tr td::before {
-        content: attr(data-label);
-        position: absolute;
-        left: 0;
-        width: 50%;
-        padding-left: 15px;
-        font-weight: bold;
-        text-align: left;
-    }
-}
-
 .editar, .excluir {
     cursor: pointer;
     color: #32CD32;
@@ -203,7 +148,9 @@ table tbody tr:hover {
 header, footer{
     width: 100%;
     height: 100px;
-    background-color: #e47914;
+    background-color: #0446C9;
+    margin-bottom: 10px;
+   
     
 }
 
@@ -212,7 +159,7 @@ header{
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 2em;
     text-align: center;
-    color: #07c3f7;
+    color: #ffffff;
     font-weight: bold;
     padding-top: 20px;
 }
