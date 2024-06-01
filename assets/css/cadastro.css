@@ -9,20 +9,23 @@ body{
    
 }
 
+.card {
+    width: 300px;
+    margin: 0 15px;
+}
 #principal{
     width: 500px;
-    height: 500px;
+    height: 600px;
     background-color:#ffffff;
     margin: auto;
     margin-bottom: 50px;
-    
+    border-radius: 25px;
 }
+
 
 #principal h1{
     width: inherit;
-    height: 50px;
     text-align: center;
-    background-color:#834c1f;
     color: #000000;
     font-family: Verdana;
 }
@@ -57,8 +60,9 @@ form{
 }
 
 #Salvar{
-    margin-top: 10px;;
-    padding-top: 8px;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 15px;
     display: block;
     width: 130px;
     height: 40px;
@@ -68,12 +72,18 @@ form{
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
     border: none;
+
 }
 
 #Salvar:hover{
     background-color: #0c6313;
     color: #ffffff;
     cursor: pointer;
+}
+
+.carousel-item img{
+    width: 1080px;
+    height: 500px;
 }
 
 #container-medicos {
@@ -88,18 +98,24 @@ form{
     justify-content: center;
     align-items: center;
 }
-.cards{
 
+#cards {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 5 colunas */
+    gap: 25px;
+    justify-items: center;
 }
 
-.card{
-    border: #000000 solid ;
-    width: 250px;
+.card {
+    box-shadow: 3px 3px rgba(27, 24, 24, 0.308), -5px 0 .4em rgb(48, 48, 39);
+    width: 300px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
+
 .editar, .excluir {
     cursor: pointer;
     color: #32CD32;
@@ -167,7 +183,7 @@ header{
 footer{
     box-sizing: border-box;
     padding: 20px;
-    height: 80px;
+    height: 60px;
 }
 
 footer span{
@@ -218,4 +234,9 @@ footer span{
     text-decoration: none;
     cursor: pointer;
 }
-/* MODAL */
+
+#confirmModal button{
+ width: 180px;
+ height: 80px;
+ margin-top: 15px;
+}

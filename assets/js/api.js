@@ -1,3 +1,4 @@
+let medicos = [];
 const botaoSalvar = document.getElementById('Salvar');
 let medicoId = null;
 let medicoParaExcluir = null;
@@ -33,7 +34,7 @@ const postMedico = async function() {
     if (request.ok) {
         alert(`Médico ${medicoId ? 'atualizado' : 'salvo'} com sucesso.`);
         resetForm();
-        getAPIMedicos(); // Atualiza a lista de médicos após adicionar ou editar um médico
+        getAPIMedicos(); 
     } else {
         alert('Não foi possível salvar o médico.');
     }
@@ -47,6 +48,7 @@ const getAPIMedicos = async function() {
     let resultMedicos = await response.json();
 
     if (response.status == 200) {
+        medicos = resultMedicos.medicos;
         setListDados(resultMedicos);
     } else {
         alert('A API não retornou dados ou está fora do ar.');
@@ -62,7 +64,7 @@ const deleteMedico = async function(id) {
 
     if (response.status == 200) {
         alert('Médico excluído com sucesso.');
-        getAPIMedicos(); // Atualiza a lista de médicos após excluir um médico
+        getAPIMedicos(); 
     } else {
         alert('Não foi possível excluir o médico.');
     }
@@ -70,12 +72,18 @@ const deleteMedico = async function(id) {
 
 const editarMedico = function(id) {
     medicoId = id;
-    let medicoParaEditar = getMedicoById(id);
+    let medicoParaEditar = medicos.find(medico => medico.id === id);
 
-    document.getElementById('nome').value = medicoParaEditar.nome;
-    document.getElementById('crm').value = medicoParaEditar.crm;
-    document.getElementById('image').value = medicoParaEditar.image;
-    document.getElementById('especialidade').value = medicoParaEditar.especialidade;
+    if (medicoParaEditar) {
+        document.getElementById('nome').value = medicoParaEditar.nome;
+        document.getElementById('crm').value = medicoParaEditar.crm;
+        document.getElementById('image').value = medicoParaEditar.image;
+        document.getElementById('especialidade').value = medicoParaEditar.especialidade;
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+        alert('Médico não encontrado.');
+    }
 };
 
 const resetForm = function() {
@@ -86,30 +94,14 @@ const resetForm = function() {
     document.getElementById('especialidade').value = '';
 };
 
-const getMedicoById = function(id) {
-    let listaMedicos = document.getElementById('medicosTable').getElementsByTagName('tbody')[0].children;
-
-    for (let i = 0; i < listaMedicos.length; i++) {
-        let medico = listaMedicos[i];
-        if (medico.cells[4].querySelector('.editar').getAttribute('onclick').includes(`(${id})`)) {
-            return {
-                id,
-                nome: medico.cells[0].textContent,
-                crm: medico.cells[1].textContent,
-                especialidade: medico.cells[2].textContent,
-                image: medico.cells[3].querySelector('img') ? medico.cells[3].querySelector('img').src : null
-            };
-        }
-    }
-
-    return null;
-};
-
-
 const confirmarExclusao = function(id) {
-    medicoParaExcluir = getMedicoById(id);
-    document.getElementById('confirmMessage').textContent = `Tem certeza que deseja excluir ${medicoParaExcluir.nome}: CRM ${medicoParaExcluir.crm}?`;
-    document.getElementById('confirmModal').style.display = 'block';
+    medicoParaExcluir = medicos.find(medico => medico.id === id);
+    if (medicoParaExcluir) {
+        document.getElementById('confirmMessage').textContent = `Tem certeza que deseja excluir ${medicoParaExcluir.nome}: CRM ${medicoParaExcluir.crm}?`;
+        document.getElementById('confirmModal').style.display = 'block';
+    } else {
+        alert('Médico não encontrado.');
+    }
 };
 
 const fecharModal = function() {

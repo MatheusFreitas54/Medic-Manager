@@ -5,7 +5,7 @@ function validateLogin(event) {
     var password = document.getElementById('password').value;
     
     if (login === 'admin' && password === '102030') {
-        window.location.href = 'admin/index.html'; // Redireciona para o diretório cadastro/
+        window.location.href = '../admin/index.html'; // Redireciona para o diretório cadastro/
     } else {
         alert('Login ou senha incorretos!');
     }
