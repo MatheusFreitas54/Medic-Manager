@@ -15,11 +15,12 @@ body{
 }
 #principal{
     width: 500px;
-    height: 600px;
-    background-color:#ffffff;
+    height: 570px;
+    background-color:#e0e0e0 !important;
     margin: auto;
-    margin-bottom: 50px;
     border-radius: 25px;
+    padding-top: 40px;
+    /* box-shadow: 0 0 10px rgba(66, 221, 169, 0.1); */
 }
 
 
@@ -35,19 +36,32 @@ form{
     margin: auto;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
     gap: 4px;
+    padding-top: 40px;
+    height: 40%;
 }
 
 #principal input, textarea{
-    width: 90%;
-    height: 30px;
+    width: 100%;
     border-radius: 5px;
     font-size: 1.1em;
     border: solid 1px #c1c1c1;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+#principal input {
+    height: 100px;
+}
+
+#principal input:focus {
+    border: 1px solid #0d7936;
+    outline: none;
+}
+
+#principal span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #principal input[name="txt_price"]{
@@ -66,12 +80,13 @@ form{
     display: block;
     width: 130px;
     height: 40px;
-    color: rgb(39, 51, 41);
+    color: #ffffff;
     background-color: #0d7936;
     text-align: center;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
     border: none;
+    width: 70%;
 
 }
 
@@ -164,10 +179,8 @@ form{
 header, footer{
     width: 100%;
     height: 100px;
-    background-color: #0446C9;
+    background-color: #0d7936;
     margin-bottom: 10px;
-   
-    
 }
 
 header{
@@ -184,11 +197,13 @@ footer{
     box-sizing: border-box;
     padding: 20px;
     height: 60px;
+    margin-bottom: -1px;
 }
 
 footer span{
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    color: #07c3f7;
+    color: #ffffff;
+    font-weight: 500;
     display: block;
     width: 50%;
     margin: auto;

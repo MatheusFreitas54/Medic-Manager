@@ -8,5 +8,7 @@ function validateLogin(event) {
         window.location.href = '../admin/index.html'; // Redireciona para o diretório cadastro/
     } else {
         alert('Login ou senha incorretos!');
+        document.querySelector('#login').value = '';
+        document.querySelector('#password').value = '';
     }
 }
