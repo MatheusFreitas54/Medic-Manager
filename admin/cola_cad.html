@@ -2,7 +2,7 @@
     if (localStorage.getItem('authenticated') !== 'true') {
       // Se não estiver autenticado, redireciona para a página de login
       window.alert('Faça login para acessar!');
-      window.location.href = '../login.html';
+      window.location.href = '../index.html';
     }
   </script>
 <!DOCTYPE html>
@@ -18,7 +18,7 @@
 <body>
     <header>
       <h1>
-        GENiMED'S
+        MediSync's
        </h1>
 
         <div>
@@ -57,11 +57,7 @@
         <center><button class="btn btn-secondary" id="confirmNo">Não</button></center>
     </div>
 </div>
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary">
-    Abrir Modal de Cadastro de Médicos
-  </button>
-  
+
   <!-- Modal -->
   <div class="modal fade" id="cadastroMedicosModal" tabindex="-1" aria-labelledby="cadastroMedicosModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">

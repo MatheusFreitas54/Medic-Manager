@@ -98,6 +98,13 @@ body {
     align-items: center;
   }
 
+  #container-reverse{
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    align-items: center;
+  }
+
   .chopper-img {
     width: 400px;
     height: 400px;
