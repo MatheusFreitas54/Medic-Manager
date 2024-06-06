@@ -1,3 +1,5 @@
+
+
 const medicos = [];
 const botaoSalvar = document.getElementById('Salvar');
 let medicoId = null;
@@ -129,7 +131,7 @@ const setListDados = () => {
                 <p>${especialidade}</p>
                 ${image ? `<img src="${image}" alt="Imagem do Médico" style="width:50px;height:50px;">` : 'N/A'}
                 <p>
-                    <span class="editar" onclick="editarMedico(${id})">Editar</span> | 
+                    <span class="editar" onclick="editarMedico(${id})"  data-bs-toggle="modal" data-bs-target="#cadastroMedicosModal" >Editar</span> | 
                     <span class="excluir" onclick="confirmarExclusao(${id})">Excluir</span>
                 </p>
             </div>
