@@ -125,18 +125,24 @@ const setListDados = () => {
 
     medicos.forEach(({ nome, crm, especialidade, image, id }) => {
         const cards = `
-            <div class="card">
-                <h4>${nome}</h4>
-                <p>${crm}</p>
-                <p>${especialidade}</p>
-                ${image ? `<img src="${image}" alt="Imagem do Médico" style="width:50px;height:50px;">` : 'N/A'}
-                <p>
-                    <span class="editar" onclick="editarMedico(${id})"  data-bs-toggle="modal" data-bs-target="#cadastroMedicosModal" >Editar</span> | 
-                    <span class="excluir" onclick="confirmarExclusao(${id})">Excluir</span>
-                </p>
-            </div>
+        <div class="card">
+        <h4>${nome}</h4>
+        <p>${crm}</p>
+        <p>${especialidade}</p>
+        ${image ? `<img src="${image}" alt="Imagem do Médico" style="width:50px;height:50px; cursor:pointer;" onclick="exibirImagemGrande('${image}')">` : 'N/A'}
+        <p>
+            <span class="editar" onclick="editarMedico(${id})"  data-bs-toggle="modal" data-bs-target="#cadastroMedicosModal">Editar</span> | 
+            <span class="excluir" onclick="confirmarExclusao(${id})">Excluir</span>
+        </p>
+    </div>
         `;
 
         tabela.innerHTML += cards;
     });
 };
+
+function exibirImagemGrande(imagem) {
+    document.getElementById("imagemGrande").src = imagem;
+    var modal = new bootstrap.Modal(document.getElementById('imagemModal'));
+    modal.show();
+}
