@@ -1,7 +1,4 @@
-
-
 const medicos = [];
-const botaoSalvar = document.getElementById('Salvar');
 let medicoId = null;
 let medicoParaExcluir = null;
 
@@ -9,10 +6,10 @@ const postMedico = async () => {
     const url = 'https://projeto-integrado-avaliacao.azurewebsites.net/projeto4/fecaf/novo/medico';
     let method = 'POST';
 
-    const { value: nome } = document.getElementById('nome');
-    const { value: crm } = document.getElementById('crm');
-    const { value: imagem } = document.getElementById('image');
-    const { value: especialidade } = document.getElementById('especialidade');
+    const nome = $('#nome').val();
+    const crm = $('#crm').val();
+    const imagem = $('#image').val();
+    const especialidade = $('#especialidade').val();
 
     const medicoJSON = { nome, crm, image: imagem, especialidade };
 
@@ -65,12 +62,12 @@ const editarMedico = (id) => {
 
     if (medicoParaEditar) {
         const { nome, crm, image, especialidade } = medicoParaEditar;
-        document.getElementById('nome').value = nome;
-        document.getElementById('crm').value = crm;
-        document.getElementById('image').value = image;
-        document.getElementById('especialidade').value = especialidade;
+        $('#nome').val(nome);
+        $('#crm').val(crm);
+        $('#image').val(image);
+        $('#especialidade').val(especialidade);
 
-        window.scrollTo({ behavior: 'smooth' });
+        $('html, body').animate({ scrollTop: 0 }, 'smooth');
     } else {
         alert('Médico não encontrado.');
     }
@@ -78,25 +75,25 @@ const editarMedico = (id) => {
 
 const resetForm = () => {
     medicoId = null;
-    document.getElementById('nome').value = '';
-    document.getElementById('crm').value = '';
-    document.getElementById('image').value = '';
-    document.getElementById('especialidade').value = '';
+    $('#nome').val('');
+    $('#crm').val('');
+    $('#image').val('');
+    $('#especialidade').val('');
 };
 
 const confirmarExclusao = (id) => {
     medicoParaExcluir = medicos.find(medico => medico.id === id);
     if (medicoParaExcluir) {
         const { nome, crm } = medicoParaExcluir;
-        document.getElementById('confirmMessage').textContent = `Tem certeza que deseja excluir ${nome}: CRM ${crm}?`;
-        document.getElementById('confirmModal').style.display = 'block';
+        $('#confirmMessage').text(`Tem certeza que deseja excluir ${nome}: CRM ${crm}?`);
+        $('#confirmModal').show();
     } else {
         alert('Médico não encontrado.');
     }
 };
 
 const fecharModal = () => {
-    document.getElementById('confirmModal').style.display = 'none';
+    $('#confirmModal').hide();
     medicoParaExcluir = null;
 };
 
@@ -111,17 +108,17 @@ const confirmarNao = () => {
     fecharModal();
 };
 
-document.getElementById('confirmYes').addEventListener('click', confirmarSim);
-document.getElementById('confirmNo').addEventListener('click', confirmarNao);
-document.getElementsByClassName('close')[0].addEventListener('click', fecharModal);
+$('#confirmYes').on('click', confirmarSim);
+$('#confirmNo').on('click', confirmarNao);
+$('.close').on('click', fecharModal);
 
-botaoSalvar.addEventListener('click', postMedico);
+$('#Salvar').on('click', postMedico);
 
-window.addEventListener('load', getAPIMedicos);
+$(window).on('load', getAPIMedicos);
 
 const setListDados = () => {
-    const tabela = document.getElementById('cards');
-    tabela.innerHTML = '';
+    const tabela = $('#cards');
+    tabela.html('');
 
     medicos.forEach(({ nome, crm, especialidade, image, id }) => {
         const cards = `
@@ -137,26 +134,26 @@ const setListDados = () => {
     </div>
         `;
 
-        tabela.innerHTML += cards;
+        tabela.append(cards);
     });
 };
 
 function exibirImagemGrande(imagem, nome) {
     console.log(nome);
-    const imagemElemento = document.getElementById("imagemGrande");
-    if (imagemElemento) {
-        imagemElemento.src = imagem;
+    const imagemElemento = $("#imagemGrande");
+    if (imagemElemento.length) {
+        imagemElemento.attr("src", imagem);
     } else {
         console.error('Elemento com id "imagemGrande" não encontrado.');
     }
 
-    const modalTitleElemento = document.querySelector('#imagemModalLabeltext');
-    if (modalTitleElemento) {
-        modalTitleElemento.innerHTML = nome;
+    const modalTitleElemento = $('#imagemModalLabeltext');
+    if (modalTitleElemento.length) {
+        modalTitleElemento.html(nome);
     } else {
         console.error('Elemento com a classe "modal-title" não encontrado.');
     }
 
-    var modal = new bootstrap.Modal(document.getElementById('imagemModal'));
+    var modal = new bootstrap.Modal($('#imagemModal')[0]);
     modal.show();
 }
